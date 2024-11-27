@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build: inotebook
+    environment:
+      APP_API_URL: http://localhost:5000
+    ports:
+      - "3000:3000"
+    networks:
+      - inotebook
+
+  backend:
+    build: backend
+    ports:
+      - "5000:5000"
+    networks:
+      - inotebook
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - inotebook
+    volumes:
+      - mongo-data:/data/db
+    
+networks:
+  inotebook:
+    driver: bridge
+  
+volumes:
+  mongo-data:
+    driver: local
